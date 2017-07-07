@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script style="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        body{font-family: sans-serif;
+        margin:0;
+        padding:0;}
+        #logo {
+            float: left;
+            font-weight: bold;
+            padding: 7px 10px;
+            font-size: 120%;
+        }
+        #container {
+            width: 233px;
+            margin: 0 auto;
+
+        }
+        #header{
+            width:100%;
+            height:40px;
+            background-color: #EEEEEE;}
+        .logobutton{
+            float: left;
+            border:1px solid #808080;
+            padding:6px;
+            margin-top: 2px;
+            border-right: none;
+        }
+        #html{
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        #output {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border:1px solid #808080;
+
+        }
+        .active{
+            background-color: #E8F2FF;
+        }
+        .buttonhighlight{
+            background-color: grey;
+        }
+        textarea{
+            resize: none;
+            border-top: none;
+            border-color: #808080;
+        }
+        .panel{
+            border-left: none;
+            float: left;
+            width: 50%;
+        }
+        iframe{
+            border: none;
+        }
+        .hidden{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="header">
+    <div id="logo">
+        CodePlayer
+    </div>
+    <div id="container">
+        <div class="logobutton active" id="html">html</div>
+        <div class="logobutton" id="css">css</div>
+        <div class="logobutton" id="javascript">javascript</div>
+        <div class="logobutton active" id="output">output</div>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="a">
+   <textarea id="htmlpanel" class="panel ">
+       <p id="paragraph">hi</p>
+   </textarea>
+     <textarea id="csspanel" class="panel hidden">
+      p {color:red;}
+   </textarea>
+     <textarea id="javascriptpanel" class="panel hidden">
+       document.getElementById("paragraph").innerHTML = "hello friends ";
+   </textarea>
+    <iframe id="outputpanel" class="panel">
+
+    </iframe>
+</div>
+<script type="text/javascript">
+     function updateoutput(){
+         $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#csspanel").val()+"</style> </head><body>"
+         +$("#htmlpanel").val()+"</body></html>");
+         document.getElementById("outputpanel").contentWindow.eval($("#javascriptpanel").val());
+
+     }
+  $(".logobutton").hover(function(){
+      $(this).addClass("buttonhighlight");
+
+  },function(){
+      $(this).removeClass("buttonhighlight");
+  });
+    $(".logobutton").click(function(){
+        $(this).toggleClass("active");
+        $(this).removeClass("buttonhighlight");
+        var panelid=$(this).attr("id")+"panel";
+        $("#"+ panelid).toggleClass("hidden");
+        var numberofactivepanel = 4-$('.hidden').length;
+        $(".panel").width(($(window).width()/numberofactivepanel)-5);
+    })
+    $(".panel").height($(window).height()-$("#header").height());
+    $(".panel").width(($(window).width()/2)-5);
+       updateoutput();
+    $("textarea").on('change keyup paste',function(){
+        updateoutput();
+    });
+</script>
+</body>
+</html>
